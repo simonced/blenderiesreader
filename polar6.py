@@ -6,7 +6,7 @@
 IES lamp file reader class
 ==========================
 
-Version : 0.21
+Version : 0.22
 
 Copyright November 2009 Simonced and RickyBlender (richardterrelive@live.ca)
 
@@ -208,16 +208,25 @@ class IESreader:
 #entry point for single class test
 #=================================
 if __name__=="__main__":
-	test = IESreader("ies2.txt")
-	#test.debug()
-	
+	ies = IESreader("ies1.txt")
 	print "File Analysed"
-	
-	print test.candelas_values
+	#ies.debug()
+
+	print "Vertical angles count : ", ies.vertical_angles_count
+	print ies.vertical_angles
+	print "Horizontal angles", ies.horizontal_angles_count
+	print ies.horizontal_angles
+
+
+	#sample code to list the couples H angle, Vangle = Candela value	
+	for hi in range(ies.horizontal_angles_count):
+		for vi in range(ies.vertical_angles_count):
+			cv = hi * ies.vertical_angles_count + vi	#this is the trick
+			print "angle (H,V : %s, %s) = %s" % (ies.horizontal_angles[hi], ies.vertical_angles[vi], ies.candelas_values[cv])
 	
 	#once we have the file in memory, we can extract vertext x,y,z coordinates ;)
-	#xyz = test.getOrthoCoords()
+	#xyz = ies.getOrthoCoords()
 	#print xyz
 	
-	#print "LAMP : %s" % test.get("LAMP")
-	#print "version %s" % test.version
+	#print "LAMP : %s" % ies.get("LAMP")
+	#print "version %s" % ies.version
