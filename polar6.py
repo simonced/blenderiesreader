@@ -6,7 +6,8 @@
 IES lamp file reader class
 ==========================
 
-Version : 0.22
+Version : 0.23
+Update : 2009-11-23
 
 Copyright November 2009 Simonced and RickyBlender (richardterrelive@live.ca)
 
