@@ -222,7 +222,8 @@ if __name__=="__main__":
 	for hi in range(ies.horizontal_angles_count):
 		for vi in range(ies.vertical_angles_count):
 			cv = hi * ies.vertical_angles_count + vi	#this is the trick
-			print "angle (H,V : %s, %s) = %s" % (ies.horizontal_angles[hi], ies.vertical_angles[vi], ies.candelas_values[cv])
+			print "angle (%iH, %s / %iV, %s) = %s cds" % \
+			(hi, ies.horizontal_angles[hi], vi, ies.vertical_angles[vi], ies.candelas_values[cv])
 	
 	#once we have the file in memory, we can extract vertext x,y,z coordinates ;)
 	#xyz = ies.getOrthoCoords()
