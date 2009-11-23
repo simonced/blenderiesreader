@@ -204,13 +204,21 @@ class IESreader:
 		
 		# all data should have been converted
 		return data
-		
+
+	#here we give the candela value from the file and this apply the multiplier
+	#======================================
+	def getMultipliedCandela(self, cv_):
+		result = float(cv_)*( 1/float(self.multiplier) )
+		return result
+
 #entry point for single class test
 #=================================
 if __name__=="__main__":
 	ies = IESreader("ies1.txt")
 	print "File Analysed"
 	#ies.debug()
+
+	print "Multiplier : ", ies.multiplier
 
 	print "Vertical angles count : ", ies.vertical_angles_count
 	print ies.vertical_angles
@@ -223,7 +231,7 @@ if __name__=="__main__":
 		for vi in range(ies.vertical_angles_count):
 			cv = hi * ies.vertical_angles_count + vi	#this is the trick
 			print "angle (%iH, %s / %iV, %s) = %s cds" % \
-			(hi, ies.horizontal_angles[hi], vi, ies.vertical_angles[vi], ies.candelas_values[cv])
+			(hi, ies.horizontal_angles[hi], vi, ies.vertical_angles[vi], ies.getMultipliedCandela(ies.candelas_values[cv]) )
 	
 	#once we have the file in memory, we can extract vertext x,y,z coordinates ;)
 	#xyz = ies.getOrthoCoords()
