@@ -6,8 +6,8 @@
 IES lamp file reader class
 ==========================
 
-Version : 0.23
-Update : 2009-11-23
+Version : 0.24
+Update : 2009-11-25
 
 Copyright November 2009 Simonced and RickyBlender (richardterrelive@live.ca)
 
@@ -51,6 +51,10 @@ class IESreader:
 		self.vertical_angles = []
 		self.horizontal_angles = []
 		self.candelas_values = []
+		#new properties added on 2009-11-25
+		self.lamps_number = 0
+		self.lamp_lumens = 0
+		self.lamp_watts = 0
 		
 		self.ready = False	#allows to make some data extractions and other....
 		
@@ -121,6 +125,8 @@ class IESreader:
 						#mask = {# of lamps} {lumens per lamp} {candela multiplier} {# of vertical angles}
 						# {# of horizontal angles} {photometric type} {units type} {width} {length} {height}
 						data = line.strip().split()
+						self.lamps_number = int(data[0])
+						self.lamp_lumens = float(data[1])
 						self.multiplier = data[2]
 						self.vertical_angles_count = int(data[3])
 						self.horizontal_angles_count = int(data[4])
@@ -227,16 +233,19 @@ if __name__=="__main__":
 	print ies.horizontal_angles
 
 
-	#sample code to list the couples H angle, Vangle = Candela value	
+	#sample code to list the couples H angle, Vangle = Candela value
+	"""
 	for hi in range(ies.horizontal_angles_count):
 		for vi in range(ies.vertical_angles_count):
 			cv = hi * ies.vertical_angles_count + vi	#this is the trick
 			print "angle (%iH, %s / %iV, %s) = %s cds" % \
 			(hi, ies.horizontal_angles[hi], vi, ies.vertical_angles[vi], ies.getMultipliedCandela(ies.candelas_values[cv]) )
-	
+	"""
 	#once we have the file in memory, we can extract vertext x,y,z coordinates ;)
 	#xyz = ies.getOrthoCoords()
 	#print xyz
 	
 	#print "LAMP : %s" % ies.get("LAMP")
 	#print "version %s" % ies.version
+	print "Lamps number = %s" % ies.lamps_number
+	print "Lumens per lamp = %s" % ies.lamp_lumens
