@@ -6,8 +6,8 @@
 IES lamp file reader class
 ==========================
 
-Version : 0.24
-Update : 2009-11-25
+Version : 0.25
+Update : 2009-11-26
 
 Copyright November 2009 Simonced and RickyBlender (richardterrelive@live.ca)
 
@@ -155,17 +155,24 @@ class IESreader:
 						
 						for value in re.split("[^0-9.]+", line):
 							if value != "":
-								self.candelas_values.append( value )
+								self.candelas_values.append( float(value) )
 						
 					else:
 						#Ok, if we come here we should have all our datas
-						
 						#since we may not need anymore data, we can update the ready status
 						self.ready = True
 			
 		except Exception as msg:
 			print "IES Error... %s" % msg
 		
+		#last piece of work, finnish to convert the anlges into floats
+		for i in range( len(self.horizontal_angles) ):
+			self.horizontal_angles[i] = float(self.horizontal_angles[i])
+
+		for i in range( len(self.vertical_angles) ):
+			self.vertical_angles[i] = float(self.vertical_angles[i])
+			
+
 	#Return one information from the data attribute
 	#==============================================
 	def get(self, field_):
@@ -194,10 +201,8 @@ class IESreader:
 		ci = 0
 		
 		for ha in self.horizontal_angles:
-			ha = float(ha)
 			for va in self.vertical_angles:
-				va = float(va)
-				cv = float(self.candelas_values[ci])
+				cv = self.candelas_values[ci]
 				
 				x = cv * math.sin(math.radians(va)) * math.cos(math.radians(ha))
 				y = cv * math.sin(math.radians(va)) * math.sin(math.radians(ha))
@@ -215,7 +220,7 @@ class IESreader:
 	#here we give the candela value from the file and this apply the multiplier
 	#======================================
 	def getMultipliedCandela(self, cv_):
-		result = float(cv_)*( 1/float(self.multiplier) )
+		result = cv_* (1/self.multiplier)
 		return result
 
 #entry point for single class test
@@ -223,15 +228,7 @@ class IESreader:
 if __name__=="__main__":
 	ies = IESreader("ies1.txt")
 	print "File Analysed"
-	#ies.debug()
-
-	print "Multiplier : ", ies.multiplier
-
-	print "Vertical angles count : ", ies.vertical_angles_count
-	print ies.vertical_angles
-	print "Horizontal angles", ies.horizontal_angles_count
-	print ies.horizontal_angles
-
+	ies.debug()
 
 	#sample code to list the couples H angle, Vangle = Candela value
 	"""
@@ -241,11 +238,22 @@ if __name__=="__main__":
 			print "angle (%iH, %s / %iV, %s) = %s cds" % \
 			(hi, ies.horizontal_angles[hi], vi, ies.vertical_angles[vi], ies.getMultipliedCandela(ies.candelas_values[cv]) )
 	"""
+
+
+	#print "Multiplier : ", ies.multiplier
+
+	#print "Vertical angles count : ", ies.vertical_angles_count
+	#print ies.vertical_angles
+	#print "Horizontal angles", ies.horizontal_angles_count
+	#print ies.horizontal_angles
+
+
 	#once we have the file in memory, we can extract vertext x,y,z coordinates ;)
 	#xyz = ies.getOrthoCoords()
 	#print xyz
 	
 	#print "LAMP : %s" % ies.get("LAMP")
 	#print "version %s" % ies.version
-	print "Lamps number = %s" % ies.lamps_number
-	print "Lumens per lamp = %s" % ies.lamp_lumens
+
+	#print "Lamps number = %s" % ies.lamps_number
+	#print "Lumens per lamp = %s" % ies.lamp_lumens
