@@ -6,8 +6,8 @@
 IES lamp file reader class
 ==========================
 
-Version : 0.25
-Update : 2009-11-26
+Version : 0.26
+Update : 2009-11-29
 
 Copyright November 2009 Simonced and RickyBlender (richardterrelive@live.ca)
 
@@ -110,11 +110,13 @@ class IESreader:
 					#line calculus and offsets
 					if self.tilt == "NONE":
 						global_data_line = 1
+						global_second_line = 2
 						vertical_angles_line = 3
 						horizontal_angles_line = 4
 						candelas_values_start = 5
 					else:
 						global_data_line = 5
+						global_second_line = 6
 						vertical_angles_line = 7
 						horizontal_angles_line = 8
 						candelas_values_start = 9
@@ -132,7 +134,10 @@ class IESreader:
 						self.horizontal_angles_count = int(data[4])
 						self.photometric_type = data[5]	# 1 feet, 2 meters
 						self.units_type = data[6]
-						
+
+					if data_line_id == global_second_line:
+						data = line.strip().split()
+						self.lamp_watts = float(data[2])
 					
 					elif data_line_id == vertical_angles_line:
 						#vertical angles list
@@ -226,7 +231,7 @@ class IESreader:
 #entry point for single class test
 #=================================
 if __name__=="__main__":
-	ies = IESreader("ies1.txt")
+	ies = IESreader("ies2.txt")
 	print "File Analysed"
 	ies.debug()
 
