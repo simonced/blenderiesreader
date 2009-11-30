@@ -7,25 +7,16 @@ IES lamp file reader class
 ==========================
 
 Version : 0.26
-Update : 2009-11-29
+Update : 2009-11-30
 
 Copyright November 2009 Simonced and RickyBlender (richardterrelive@live.ca)
 
-Thread started on Blenderartists.org at
-http://blenderartists.org/forum/showthread.php?p=1508803#post1508803
+See licence and other informations at
+http://code.google.com/p/blenderiesreader/wiki/License
 
-Let us know on the blenderartists forum if you use this script and if you encounter any problems running it.
+Project page :
+http://code.google.com/p/blenderiesreader
 
-License :
----------
-- For personnal use only
-- Not for commercial use
-- It would be nice to reference the authors of this script when using it
-- Please do not change the Copyright statements in the script
-
-External references:
---------------------
-good format spec : http://www.ltblight.com/English.lproj/LTBLhelp/pages/iesformat.html
 """
 
 import re
