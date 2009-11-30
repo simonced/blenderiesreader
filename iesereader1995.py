@@ -6,7 +6,7 @@
 IES lamp file reader class
 ==========================
 
-Version : 0.26
+Version : 0.27
 Update : 2009-11-30
 
 Copyright November 2009 Simonced and RickyBlender (richardterrelive@live.ca)
@@ -35,7 +35,7 @@ class IESreader:
 		#other specific attributes to be added as the unit, the type and the candela factor.
 		self.version = ""
 		self.multiplier = 0
-		self.units_type = 0
+		self.unit_type = 0
 		self.photometric_type = 0
 		self.vertical_angles_count = 0
 		self.horizontal_angles_count = 0
@@ -48,7 +48,10 @@ class IESreader:
 		self.lamp_watts = 0
 		
 		self.ready = False	#allows to make some data extractions and other....
-		
+
+		unit_types = ('dummy', 'feet', 'meters')
+		photometric_types = ('dummy', 'C', 'B', 'A')
+
 		try:
 			#lines to be used in the loop
 			
@@ -123,8 +126,8 @@ class IESreader:
 						self.multiplier = data[2]
 						self.vertical_angles_count = int(data[3])
 						self.horizontal_angles_count = int(data[4])
-						self.photometric_type = data[5]	# 1 feet, 2 meters
-						self.units_type = data[6]
+						self.photometric_type = photometric_types[int(data[5])]
+						self.unit_type = unit_types[int(data[6])] 	# 1 feet, 2 meters
 
 					if data_line_id == global_second_line:
 						data = line.strip().split()
