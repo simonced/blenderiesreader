@@ -6,8 +6,8 @@
 IES lamp file reader class
 ==========================
 
-Version : 0.27
-Update : 2009-11-30
+Version : 0.28
+Update : 2009-12-02
 
 Copyright November 2009 Simonced and RickyBlender (richardterrelive@live.ca)
 
@@ -35,8 +35,8 @@ class IESreader:
 		#other specific attributes to be added as the unit, the type and the candela factor.
 		self.version = ""
 		self.multiplier = 0
-		self.unit_type = 0
-		self.photometric_type = 0
+		self.unit_type = ""
+		self.photometric_type = ""
 		self.vertical_angles_count = 0
 		self.horizontal_angles_count = 0
 		self.vertical_angles = []
@@ -46,9 +46,16 @@ class IESreader:
 		self.lamps_number = 0
 		self.lamp_lumens = 0
 		self.lamp_watts = 0
+		#new properties added on 2009-12-02
+		self.width = 0.0
+		self.length = 0.0
+		self.height = 0.0
+		self.ballast_factor = 0.0
+		
 		
 		self.ready = False	#allows to make some data extractions and other....
 
+		#To convert from the ies data into a human readable form
 		unit_types = ('dummy', 'feet', 'meters')
 		photometric_types = ('dummy', 'C', 'B', 'A')
 
@@ -128,9 +135,14 @@ class IESreader:
 						self.horizontal_angles_count = int(data[4])
 						self.photometric_type = photometric_types[int(data[5])]
 						self.unit_type = unit_types[int(data[6])] 	# 1 feet, 2 meters
+						self.width = float(data[7])
+						self.length = float(data[8])
+						self.height = float(data[9])
 
 					if data_line_id == global_second_line:
+						# MAsk : {ballast factor} {future use} {input watts}
 						data = line.strip().split()
+						self.ballast_factor = float(data[0])
 						self.lamp_watts = float(data[2])
 					
 					elif data_line_id == vertical_angles_line:
@@ -225,7 +237,7 @@ class IESreader:
 #entry point for single class test
 #=================================
 if __name__=="__main__":
-	ies = IESreader("ies2.txt")
+	ies = IESreader("ies1.txt")
 	print "File Analysed"
 	ies.debug()
 
