@@ -6,8 +6,8 @@
 IES lamp file reader class
 ==========================
 
-Version : 0.28
-Update : 2009-12-02
+Version : 0.29
+Update : 2009-12-03
 
 Copyright November 2009 Simonced and RickyBlender (richardterrelive@live.ca)
 
@@ -42,6 +42,7 @@ class IESreader:
 		self.vertical_angles = []
 		self.horizontal_angles = []
 		self.candelas_values = []
+		self.tilt = ''
 		#new properties added on 2009-11-25
 		self.lamps_number = 0
 		self.lamp_lumens = 0
