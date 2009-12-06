@@ -6,8 +6,8 @@
 IES lamp file reader class
 ==========================
 
-Version : 0.29
-Update : 2009-12-03
+Version : 0.30
+Update : 2009-12-05
 
 Copyright November 2009 Simonced and RickyBlender (richardterrelive@live.ca)
 
@@ -188,7 +188,12 @@ class IESreader:
 	#Return one information from the data attribute
 	#==============================================
 	def get(self, field_):
-		#Entry check to prevent error
+		#Let's first check if the field_ could be a property.
+		#The goal of it is to make this lib easily compatible with other formats thant 1995
+		if( field_ in self.__dict__ ):
+			return self.__dict__[field_]
+
+		#Entry check in the header data analysed to prevent error
 		if(field_ in self.data):
 			return self.data[field_]
 		else:
@@ -251,8 +256,8 @@ if __name__=="__main__":
 			(hi, ies.horizontal_angles[hi], vi, ies.vertical_angles[vi], ies.getMultipliedCandela(ies.candelas_values[cv]) )
 	"""
 
-
-	#print "Multiplier : ", ies.multiplier
+	#new attribute acccess method
+	print "Version : ", ies.get("version")
 
 	#print "Vertical angles count : ", ies.vertical_angles_count
 	#print ies.vertical_angles
