@@ -390,7 +390,11 @@ class IESreader:
 	# @return Float
 	#======================================
 	def getMultipliedCandela(self, cv_):
-		result = cv_* (1/self.multiplier)
+		if self.version == 'LM-631995':
+			result = cv_* (1/self.multiplier) # formula provided by Rickyblender
+		else:
+			#Don't know yet if a multiplier has to be applyed for EU std.
+			result = cv_
 		return result
 
 	#TODO
