@@ -7,7 +7,7 @@ IES lamp file reader class
 ==========================
 
 Version : 0.32
-Update : 2009-12-11
+Update : 2010-09-01
 
 Copyright November 2009 Simonced and RickyBlender (richardterrelive@live.ca)
 
@@ -100,7 +100,7 @@ class IESreader:
 
 						#On other files formats, we pass, only 1995 specs suported at the moment
 						if regVer.group(2) != "1995":
-							print "Error : Other file formats than 1995 are not handled"
+							print("Error : Other file formats than 1995 are not handled")
 							return
 							
 					elif regKW:
@@ -126,7 +126,7 @@ class IESreader:
 
 						else:
 							#Nothing match for here?
-							print "Unrecognized data"
+							print("Unrecognized data")
 						
 				else:
 					#Start to analyse technical data
@@ -199,7 +199,7 @@ class IESreader:
 						self.ready = True
 			
 		except Exception as msg:
-			print "IES Error... %s" % msg
+			print("IES Error... %s" % msg)
 
 
 	#Return one information from the data attribute
@@ -264,7 +264,7 @@ class IESreader:
 			self.dataEU['isym'] = int(data)	# Symmetry
 		elif read_line_ == 4:
 			self.vertical_angles_count = int(data)
-			self.dataEU['mc'] = int(data)
+			self.dataEU['mc'] = int(data)	# Number of C planes
 		elif read_line_ == 5:
 			self.dataEU['dc'] = float(data)	# distance => float
 		elif read_line_ == 6:
@@ -322,7 +322,7 @@ class IESreader:
 			self.candelas_valuesEU.append( float(data) )
 
 		else:
-			print "Unparsed EU data at line ", read_line_
+			print("Unparsed EU data at line ", read_line_)
 
 		#print "reading EU : ", read_line_, cv_end_line
 		
@@ -408,7 +408,7 @@ if __name__=="__main__":
 	#IES std = ies1.txt
 	#EUR std : ERCO_34162000_1xQT-DE12_1000W.ies
 	ies = IESreader("ERCO_34162000_1xQT-DE12_1000W.ies")
-	print "File Analysed"
+	print("File Analysed")
 	#ies.debug()
 
 	#sample code to list the couples H angle, Vangle = Candela value
@@ -421,19 +421,19 @@ if __name__=="__main__":
 	"""
 
 	#new attribute acccess method
-	print "Version : ", ies.get("version")
+	print("Version : ", ies.get("version"))
 
 	if ies.get("version")=='EU':
 		# -= EU specific value tests =-
-		print "Company = ", ies.get('company')
-		print "DFF = ", ies.get('dff')
+		print("Company = ", ies.get('company'))
+		print("DFF = ", ies.get('dff'))
 
 	else:
 		# -= IES specific tests =-
-		print "LAMP : %s" % ies.get("LAMP")
+		print("LAMP : %s" % ies.get("LAMP"))
 
-		print "Lamps number = %s" % ies.get('lamps_number')
-		print "Lumens per lamp = %s" % ies.get('lamp_lumens')
+		print("Lamps number = %s" % ies.get('lamps_number'))
+		print("Lumens per lamp = %s" % ies.get('lamp_lumens'))
 
 	"""
 	#Check of the angles only
@@ -451,8 +451,8 @@ if __name__=="__main__":
 		pprint.pprint( ies.candelas_values )
 	"""
 
-	print "Ready? ", ies.ready
+	print("Ready? ", ies.ready)
 
 	#once we have the file in memory, we can extract vertext x,y,z coordinates ;)
-	print "Ortho Data :"
-	print ies.getOrthoCoords()
+	print("Ortho Data :")
+	print(ies.getOrthoCoords())
