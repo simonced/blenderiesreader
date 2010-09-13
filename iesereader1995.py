@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-""" 
+"""
 ==========================
 IES lamp file reader class
 ==========================
 
 Version : 0.32
-Update : 2010-09-01
+Update : 2010-09-11
 
 Copyright November 2009 Simonced and RickyBlender (richardterrelive@live.ca)
 
@@ -36,7 +36,7 @@ class IESreader:
 	#object constructor
 	#==================
 	def __init__(self, filePath_):
-		
+
 		#the data structure of the file readen (HEADER PART)
 		self.data = {}
 		self.dataEU = {}	#Same for EU specific use
@@ -62,7 +62,7 @@ class IESreader:
 		self.length = 0.0
 		self.height = 0.0
 		self.ballast_factor = 0.0
-		
+
 		self.ready = False	# allows to make some data extractions and other....
 
 		#To convert from the ies data into a human readable form
@@ -71,7 +71,7 @@ class IESreader:
 
 		try:
 			#lines to be used in the loop
-			
+
 			#we start to count once the Title line is passed
 			tilt_line_passed = False
 			data_line_id = 0
@@ -88,12 +88,12 @@ class IESreader:
 				elif not tilt_line_passed:
 					# IES header analys part
 					#-----------------------
-					
+
 					#line = line.strip()	#may be needed for some lines, but not all
 					regVer = re.match("IESNA:(.*([0-9]{4}))", line)
 					regKW = re.match("\[(.*)\](.*)", line)
 					regTilt = re.match("TILT=(.*)", line)
-					
+
 					#We found key / value datas?
 					if regVer:
 						self.version = regVer.group(1).strip()
@@ -102,7 +102,7 @@ class IESreader:
 						if regVer.group(2) != "1995":
 							print("Error : Other file formats than 1995 are not handled")
 							return
-							
+
 					elif regKW:
 						key = regKW.group(1)
 						data = regKW.group(2)
@@ -110,11 +110,11 @@ class IESreader:
 							self.data[key] += ' '+data.strip()
 						else:
 							self.data[key] = data.strip()
-							
+
 					elif regTilt:
 						self.tilt = regTilt.group(1).strip()
 						tilt_line_passed = True
-						
+
 					else:
 						#difficult case, format non recognized?
 
@@ -127,12 +127,12 @@ class IESreader:
 						else:
 							#Nothing match for here?
 							print("Unrecognized data")
-						
+
 				else:
 					#Start to analyse technical data
 					################################
 					data_line_id += 1
-					
+
 					#line calculus and offsets
 					if self.tilt == "NONE":
 						global_data_line = 1
@@ -169,35 +169,35 @@ class IESreader:
 						data = line.strip().split()
 						self.ballast_factor = float(data[0])
 						self.lamp_watts = float(data[2])
-					
+
 					elif data_line_id == vertical_angles_line:
 						#vertical angles list
 						self.vertical_angles.extend( map( float, line.strip().split() ) )
 						if(len(self.vertical_angles)<self.vertical_angles_count):
 							data_line_id -= 1	#other datas on the next line
-						
+
 					elif data_line_id == horizontal_angles_line:
 						#horizontal angles list
 						self.horizontal_angles.extend( map(float, line.strip().split() ) )
 						if(len(self.horizontal_angles)<self.horizontal_angles_count):
 							data_line_id -= 1	#other datas on the next line
-						
+
 					#Analyse of the candelas values
 					#=----------------------------=
 					#Because lines are splited, we have to count the inserted data to know if we need to load more informations
 					elif data_line_id >= candelas_values_start and \
 					len(self.candelas_values) < (self.horizontal_angles_count * self.vertical_angles_count):
 						#the candela values, fun but hard part ;-)
-						
+
 						for value in re.split("[^0-9.]+", line):
 							if value != "":
 								self.candelas_values.append( float(value) )
-						
+
 					else:
 						#Ok, if we come here we should have all our datas
 						#since we may not need anymore data, we can update the ready status
 						self.ready = True
-			
+
 		except Exception as msg:
 			print("IES Error... %s" % msg)
 
@@ -216,19 +216,19 @@ class IESreader:
 
 		elif self.version=='EU' and field_ in self.dataEU:
 			return self.dataEU[field_]
-		
+
 		else:
 			return None
-	
+
 	#debug method to simply check the content of data and other things
 	#=================================================================
 	def debug(self):
 		pprint.pprint(self.__dict__)
-	
+
 	#A function to extract the ortho coordinates for the candale angles and values
 	#=============================================================================
 	def getOrthoCoords(self):
-		
+
 		if not self.ready:
 			#first check, file ready?
 			return None
@@ -240,7 +240,7 @@ class IESreader:
 		elif self.version == 'EU':
 			#Same thing woth the EU data, because they are stored in a different way
 			return self._getOrthoCoordsFromEU()
-		
+
 
 	#The analysing function for the EU file std
 	#==========================================
@@ -325,11 +325,11 @@ class IESreader:
 			print("Unparsed EU data at line ", read_line_)
 
 		#print "reading EU : ", read_line_, cv_end_line
-		
+
 		#finished parsing?
 		if read_line_ > last_header_line and read_line_ > cv_end_line:
 			self.ready = True
-		
+
 
 	#The function to create the ortho data from the 1995 IES standard
 	#================================================================
@@ -341,18 +341,17 @@ class IESreader:
 		ci = 0
 
 		for ha in self.horizontal_angles:
-			for va in self.vertical_angles:
-				cv = self.candelas_values[ci]
+                    for va in self.vertical_angles:
+                        cv = self.candelas_values[ci]
 
-				x = cv * math.sin(math.radians(va)) * math.cos(math.radians(ha))
-				y = cv * math.sin(math.radians(va)) * math.sin(math.radians(ha))
-				z = cv * math.cos(math.radians(va))
-				vector = [x,y,z]
+                        x = cv * math.sin(math.radians(va)) * math.cos(math.radians(ha))
+                        y = cv * math.sin(math.radians(va)) * math.sin(math.radians(ha))
+                        z = cv * math.cos(math.radians(va))
+                        vector = [x, y, z]
 
-                #read of the next candela value
-				ci += 1
-
-				data.append(vector)
+                        #read of the next candela value
+                        ci += 1
+                        data.append(vector)
 
 		# all data should have been converted
 		return data
@@ -376,7 +375,7 @@ class IESreader:
 				z = cv * math.cos(math.radians(va))
 				vector = [x,y,z]
 
-                #read of the next candela value
+                                #read of the next candela value
 				ci += 1
 
 				data.append(vector)
@@ -400,7 +399,7 @@ class IESreader:
 	#TODO
 	#Create a function to parse the angles and candelas values the same way
 	#independently from the format
-	
+
 
 #entry point for single class test
 #=================================
