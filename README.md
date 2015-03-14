@@ -22,7 +22,7 @@ light fixture in 2D or 3D with an intensity value in candelas.
 
 Here is a snapshot of the 3D mesh generated from an IES file:
 
-![http://img514.imageshack.us/img514/1632/blenderiestest03.jpg](http://img514.imageshack.us/img514/1632/blenderiestest03.jpg)
+![](http://img514.imageshack.us/img514/1632/blenderiestest03.jpg)
 
 
 **2010-09-13 : Blender 2.5 API update**  
@@ -31,7 +31,7 @@ The script have been updated to work in Blender 2.5 API.
 Still, modifiers have to be done but the data from the IES python class can be loaded now.
 
 Screenie (sorry for huge pic):  
-![http://img829.imageshack.us/img829/2323/portage25.jpg](http://img829.imageshack.us/img829/2323/portage25.jpg)
+![](http://img829.imageshack.us/img829/2323/portage25.jpg)
 
 **Note:**  
 For the time being there is no relationship between these values and what you see in blender's render.
